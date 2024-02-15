@@ -16,7 +16,9 @@
     <p>
       {{ course.descripcion }}
     </p>
-    <v-btn block class="my-2" color="pink-darken-4">Add to cart</v-btn>
+    <v-btn block class="my-2" color="pink-darken-4" @click="addToCart()"
+      >Add to cart</v-btn
+    >
   </div>
   <div v-else>
     <NotFound404View />
@@ -31,6 +33,12 @@ import axios from "axios";
 
 const route = useRoute();
 const course = ref(null);
+
+const addToCart = () => {
+  axios.post(`/users/0/cart`, course.value).then((res) => {
+    console.log(res.data);
+  });
+};
 
 onMounted(() => {
   axios.get(`/courses/${route.params.productId}`).then((res) => {

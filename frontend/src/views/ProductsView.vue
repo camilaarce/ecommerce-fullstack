@@ -14,7 +14,13 @@
         >
         <v-card-text class="px-7 pb-5">
           {{ course.precio }}
-          <v-btn block class="my-2" color="pink-darken-4">Add to cart</v-btn>
+          <v-btn
+            block
+            class="my-2"
+            color="pink-darken-4"
+            @click="addToCart(course)"
+            >Add to cart</v-btn
+          >
         </v-card-text>
       </v-card>
     </div>
@@ -57,6 +63,12 @@ const updatePage = (page) => {
 
 const mostrarCurso = (id) => {
   route.push(`/products/${id}`);
+};
+
+const addToCart = (course) => {
+  axios.post(`/users/0/cart`, course).then((res) => {
+    console.log(res.data);
+  });
 };
 
 onMounted(() => {
