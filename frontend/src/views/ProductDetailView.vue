@@ -7,7 +7,12 @@
       closable
       color="pink-darken-4"
     ></v-alert>
-    <v-img :src="course.image" height="500" cover class="mt-5"></v-img>
+    <v-img
+      :src="axios.getUri() + '/' + course.image"
+      height="500"
+      cover
+      class="mt-5"
+    ></v-img>
     <v-row class="my-2">
       <v-col cols="6">
         <h1>
@@ -36,7 +41,7 @@
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import NotFound404View from "./NotFound404View.vue";
-import axios from "axios";
+import axios from "../axios-config";
 
 const route = useRoute();
 const course = ref(null);

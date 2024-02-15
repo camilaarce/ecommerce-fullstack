@@ -6,7 +6,11 @@
       <div v-for="course in cartItems" :key="course.id" class="mt-5">
         <v-row>
           <v-col cols="5" sm="2">
-            <v-img :src="course.image" aspect-ratio="1" cover></v-img>
+            <v-img
+              :src="axios.getUri() + '/' + course.image"
+              aspect-ratio="1"
+              cover
+            ></v-img>
           </v-col>
           <v-col cols="7" sm="4" class="d-flex align-center">
             <div>
@@ -54,7 +58,7 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import axios from "../axios-config";
 import { onMounted, ref } from "vue";
 
 const cartItems = ref([]);
