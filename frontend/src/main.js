@@ -19,6 +19,24 @@ const vuetify = createVuetify({
     directives,
 })
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCsiKm_kW1LGgmX1hnh-p-ELWDXi3Fl_Ms",
+    authDomain: "ecommerce-fullstack-camilaarce.firebaseapp.com",
+    projectId: "ecommerce-fullstack-camilaarce",
+    storageBucket: "ecommerce-fullstack-camilaarce.appspot.com",
+    messagingSenderId: "611238637761",
+    appId: "1:611238637761:web:668d387570f98377ec2440"
+};
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
+
 createApp(App)
     .use(vuetify)
     .use(VueRouter.createRouter({
