@@ -18,7 +18,7 @@
           @click="mostrarCurso(course.id)"
         ></v-img>
         <v-card-title class="px-7"
-          ><h3>{{ course.name }}</h3></v-card-title
+          ><h3 style="white-space: nowrap; width: 100%; overflow: hidden; text-overflow: ellipsis;">{{ course.name }}</h3></v-card-title
         >
         <v-card-text class="px-7 pb-5">
           {{ course.precio }}
