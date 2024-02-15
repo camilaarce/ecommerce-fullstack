@@ -1,14 +1,22 @@
 <template>
   <div>
+    <v-alert
+      v-if="alert"
+      text="Se agregó el curso al carrito"
+      variant="tonal"
+      closable
+      color="pink-darken-4"
+    ></v-alert>
     <div class="text-h4 ml-7 my-2"><p>Courses</p></div>
     <v-divider class="mx-3"></v-divider>
     <div class="container-products">
-      <v-card
-        v-for="(course, index) in paginatedCourses"
-        :key="index"
-        @click="mostrarCurso(course.id)"
-      >
-        <v-img :src="course.image" cover height="400"></v-img>
+      <v-card v-for="(course, index) in paginatedCourses" :key="index">
+        <v-img
+          :src="course.image"
+          cover
+          height="400"
+          @click="mostrarCurso(course.id)"
+        ></v-img>
         <v-card-title class="px-7"
           ><h3>{{ course.name }}</h3></v-card-title
         >
@@ -47,6 +55,7 @@ const courses = ref([]);
 
 const currentPage = ref(1);
 const itemsPerPage = 3;
+const alert = ref(false);
 
 const totalPages = computed(() =>
   Math.ceil(courses.value.length / itemsPerPage)
@@ -66,8 +75,8 @@ const mostrarCurso = (id) => {
 };
 
 const addToCart = (course) => {
-  axios.post(`/users/0/cart`, course).then((res) => {
-    console.log(res.data);
+  axios.post(`/users/0/cart`, course).then(() => {
+    alert.value = true;
   });
 };
 

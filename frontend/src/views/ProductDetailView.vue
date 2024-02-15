@@ -1,6 +1,13 @@
 <template>
-  <div v-if="course">
-    <v-img :src="course.image" height="500" cover></v-img>
+  <div v-if="course" class="mb-5">
+    <v-alert
+      v-if="alert"
+      text="Se agregó el curso al carrito"
+      variant="tonal"
+      closable
+      color="pink-darken-4"
+    ></v-alert>
+    <v-img :src="course.image" height="500" cover class="mt-5"></v-img>
     <v-row class="my-2">
       <v-col cols="6">
         <h1>
@@ -33,10 +40,11 @@ import axios from "axios";
 
 const route = useRoute();
 const course = ref(null);
+const alert = ref(false);
 
 const addToCart = () => {
-  axios.post(`/users/0/cart`, course.value).then((res) => {
-    console.log(res.data);
+  axios.post(`/users/0/cart`, course.value).then(() => {
+    alert.value = true;
   });
 };
 
