@@ -3,6 +3,7 @@
     <v-alert
       text="Se agregó el curso al carrito"
       closable
+      variant="tonal"
       color="pink-darken-4"
     ></v-alert>
   </div>

@@ -8,7 +8,12 @@
       </v-col>
       <v-col cols="6" class="d-flex align-center justify-end">
         <router-link to="/cart">
-          <v-btn class="my-2" color="pink-darken-4">Shopping Cart</v-btn>
+          <v-btn class="my-2" color="pink-darken-4"
+            >Shopping Cart
+            <span class="badge" v-if="cartItems.length > 0">{{
+              cartItems.length
+            }}</span>
+          </v-btn>
         </router-link>
       </v-col>
     </v-row>
@@ -18,4 +23,25 @@
 
 <script setup>
 import logo from "@/assets/logo.png";
+import axios from "../axios-config";
+import { onMounted, ref } from "vue";
+
+const cartItems = ref([]);
+
+onMounted(() => {
+  axios.get(`/users/0/cart`).then((res) => {
+    cartItems.value = res.data;
+  });
+});
 </script>
+
+<style scoped>
+.badge {
+  background-color: white;
+  color: #880e4f;
+  border-radius: 50%;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+</style>
