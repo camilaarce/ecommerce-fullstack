@@ -33,5 +33,14 @@
 </template>
 
 <script setup>
-import { cartItems } from "@/temp-data";
+import axios from "axios";
+import { onMounted, ref } from "vue";
+
+const cartItems = ref([]);
+
+onMounted(() => {
+  axios.get(`/users/0/cart`).then((res) => {
+    cartItems.value = res.data;
+  });
+});
 </script>
