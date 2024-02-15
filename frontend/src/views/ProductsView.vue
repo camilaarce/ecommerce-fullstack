@@ -12,7 +12,7 @@
     <div class="container-products">
       <v-card v-for="(course, index) in paginatedCourses" :key="index">
         <v-img
-          :src="axios.getUri() + '/' + course.image"
+          :src="axios.getUri() + course.image"
           cover
           height="400"
           @click="mostrarCurso(course.id)"
