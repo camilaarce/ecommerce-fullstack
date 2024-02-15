@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'https://ecommerce-six-ashen-58.vercel.app/',
+    baseURL: 'https://ecommerce-o9xm.onrender.com/',
 });
 
 export default instance;
