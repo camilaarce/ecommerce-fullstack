@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon --exec npx babel-node src/server.js",
-    "vercel-build": "echo hello"
+    "vercel-build": "echo hello",
+    "build": "babel src -d dist"
   },
   "keywords": [],
   "author": "",
