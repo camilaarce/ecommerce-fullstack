@@ -15,7 +15,11 @@
             </div>
           </v-col>
           <v-col cols="12" sm="6" class="d-flex align-center">
-            <v-btn block class="my-2" color="pink-darken-4"
+            <v-btn
+              block
+              class="my-2"
+              color="pink-darken-4"
+              @click="remove(course.id)"
               >Remove from cart</v-btn
             >
           </v-col>
@@ -37,6 +41,12 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 
 const cartItems = ref([]);
+
+const remove = (id) => {
+  axios.delete(`/users/0/cart/${id}`).then((res) => {
+    cartItems.value = res.data;
+  });
+};
 
 onMounted(() => {
   axios.get(`/users/0/cart`).then((res) => {
