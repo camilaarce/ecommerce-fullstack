@@ -24,15 +24,17 @@
 </template>
 
 <script setup>
-import { courses } from "../temp-data.js";
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import NotFound404View from "./NotFound404View.vue";
+import axios from "axios";
 
 const route = useRoute();
 const course = ref(null);
 
 onMounted(() => {
-  course.value = courses.find((course) => course.id == route.params.productId);
+  axios.get(`/courses/${route.params.productId}`).then((res) => {
+    course.value = res.data;
+  });
 });
 </script>
