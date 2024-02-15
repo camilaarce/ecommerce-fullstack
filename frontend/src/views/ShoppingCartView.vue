@@ -21,20 +21,20 @@
           <v-col cols="12" sm="6" class="d-flex align-center">
             <v-btn block class="my-2" color="pink-darken-4"
               >Remove from cart
-              <v-dialog v-model="dialog" activator="parent" width="auto">
+              <v-dialog v-model="course.dialog" activator="parent" width="auto">
                 <v-card>
                   <v-card-text>
                     Do you want to remove the course {{ course.name }} from the
                     cart?
                   </v-card-text>
                   <div class="text-end pa-4">
-                    <v-btn @click="dialog = false" variant="text"
+                    <v-btn @click="course.dialog = false" variant="text"
                       >Close Dialog</v-btn
                     >
                     <v-btn
                       @click="
                         remove(course.id);
-                        dialog = false;
+                        course.dialog = false;
                       "
                       color="pink-darken-4"
                       >confirm</v-btn
@@ -62,7 +62,6 @@ import axios from "../axios-config";
 import { onMounted, ref } from "vue";
 
 const cartItems = ref([]);
-const dialog = ref(false);
 
 const remove = (id) => {
   axios.delete(`/users/0/cart/${id}`).then((res) => {
@@ -73,6 +72,7 @@ const remove = (id) => {
 onMounted(() => {
   axios.get(`/users/0/cart`).then((res) => {
     cartItems.value = res.data;
+    cartItems.value.map((item) => ({ ...item, dialog: false }));
   });
 });
 </script>
