@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-pink-darken-4 d-flex flex-column py-5">
+  <div class="footer">
     <div>
       <v-btn class="mx-4" variant="text" icon="mdi-instagram"></v-btn>
       <v-btn class="mx-4" variant="text" icon="mdi-facebook"></v-btn>
@@ -9,5 +9,15 @@
     <v-divider></v-divider>
 
     <div>{{ new Date().getFullYear() }} — <strong>Para Saborear</strong></div>
-  </v-footer>
+  </div>
 </template>
+
+<style scoped>
+.footer {
+  background-color: #880e4f;
+  color: white;
+  height: 10vh;
+  display: grid;
+  place-items: center;
+}
+</style>
