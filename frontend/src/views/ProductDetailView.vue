@@ -8,7 +8,7 @@
       color="pink-darken-4"
     ></v-alert>
     <v-img
-      :src="axios.getUri() + '/' + course.image"
+      :src="axios.getUri() + course.image"
       height="500"
       cover
       class="mt-5"
