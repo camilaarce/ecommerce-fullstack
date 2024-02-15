@@ -1,18 +1,21 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import path from 'path';
+import cors from 'cors';
 
 require('dotenv').config();
+const app = express();
 async function start() {
     const client = new MongoClient(`mongodb+srv://camilarce2710:${process.env.PASS}@cluster0.at3tbvn.mongodb.net/?retryWrites=true&w=majority`)
 
     await client.connect();
     const db = client.db('ecommerce-fullstack')
 
-    const app = express();
     app.use(express.json())
 
     app.use('/image', express.static(path.join(__dirname, '../assets')));
+
+    app.use(cors())
 
     /* app.get('/images/:imageName', (req, res) => {
         const imageName = req.params.imageName;
@@ -76,4 +79,5 @@ async function start() {
     })
 }
 
+module.exports = app;
 start();

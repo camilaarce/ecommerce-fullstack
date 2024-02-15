@@ -12,7 +12,7 @@
     <div class="container-products">
       <v-card v-for="(course, index) in paginatedCourses" :key="index">
         <v-img
-          :src="course.image"
+          :src="axios.getUri() + '/' + course.image"
           cover
           height="400"
           @click="mostrarCurso(course.id)"
@@ -47,7 +47,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import axios from "../axios-config";
 
 const route = useRouter();
 
