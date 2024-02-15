@@ -7,7 +7,7 @@
         <v-row>
           <v-col cols="5" sm="2">
             <v-img
-              :src="axios.getUri() + '/' + course.image"
+              :src="axios.getUri() + course.image"
               aspect-ratio="1"
               cover
             ></v-img>
