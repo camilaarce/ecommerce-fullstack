@@ -1,24 +1,27 @@
 <template>
   <div>
-    <v-alert
-      v-if="alert"
-      text="Se agregó el curso al carrito"
-      variant="tonal"
-      closable
-      color="pink-darken-4"
-    ></v-alert>
+    <alert-add-to-cart v-if="alert" />
     <div class="text-h4 ml-7 my-2"><p>Courses</p></div>
     <v-divider class="mx-3"></v-divider>
     <div class="container-products">
       <v-card v-for="(course, index) in paginatedCourses" :key="index">
         <v-img
-          :src="axios.getUri() + '/' + course.image"
+          :src="axios.getUri() + course.image"
           cover
           height="400"
           @click="mostrarCurso(course.id)"
         ></v-img>
         <v-card-title class="px-7"
-          ><h3>{{ course.name }}</h3></v-card-title
+          ><h3
+            style="
+              white-space: nowrap;
+              width: 100%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            "
+          >
+            {{ course.name }}
+          </h3></v-card-title
         >
         <v-card-text class="px-7 pb-5">
           {{ course.precio }}
@@ -48,6 +51,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "../axios-config";
+import AlertAddToCart from "@/components/AlertAddToCart.vue";
 
 const route = useRouter();
 

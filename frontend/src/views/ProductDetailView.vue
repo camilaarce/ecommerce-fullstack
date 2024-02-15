@@ -1,14 +1,8 @@
 <template>
   <div v-if="course" class="mb-5">
-    <v-alert
-      v-if="alert"
-      text="Se agregó el curso al carrito"
-      variant="tonal"
-      closable
-      color="pink-darken-4"
-    ></v-alert>
+    <AlertAddToCart v-if="alert" />
     <v-img
-      :src="axios.getUri() + '/' + course.image"
+      :src="axios.getUri() + course.image"
       height="500"
       cover
       class="mt-5"
@@ -42,6 +36,7 @@ import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import NotFound404View from "./NotFound404View.vue";
 import axios from "../axios-config";
+import AlertAddToCart from "@/components/AlertAddToCart.vue";
 
 const route = useRoute();
 const course = ref(null);
