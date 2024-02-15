@@ -1,9 +1,9 @@
 <template>
   <div class="footer">
     <div>
-      <v-btn class="mx-4" variant="text" icon="mdi-instagram"></v-btn>
-      <v-btn class="mx-4" variant="text" icon="mdi-facebook"></v-btn>
-      <v-btn class="mx-4" variant="text" icon="mdi-whatsapp"></v-btn>
+      <v-btn class="mx-4" variant="text" icon="mdi-instagram" href="https://www.instagram.com/parasaborear" target="_blank"></v-btn>
+      <v-btn class="mx-4" variant="text" icon="mdi-facebook" href="https://www.facebook.com/parasaborearsgo" target="_blank"></v-btn>
+      <v-btn class="mx-4" variant="text" icon="mdi-whatsapp" href="https://api.whatsapp.com/send?phone=543856978804&text=hola%20quiero%20hacer%20una%20consulta" target="_blank"></v-btn>
     </div>
 
     <v-divider></v-divider>
