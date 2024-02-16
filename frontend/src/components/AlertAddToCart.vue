@@ -1,11 +1,6 @@
 <template>
   <div class="alert">
-    <v-alert
-      :text="text"
-      closable
-      variant="tonal"
-      color="pink-darken-4"
-    ></v-alert>
+    <v-alert :text="text" closable icon="$info"></v-alert>
   </div>
 </template>
 
@@ -21,5 +16,11 @@ defineProps(["text"]);
   top: 150px;
   right: 1%;
   z-index: 2;
+}
+
+.v-alert {
+  background-color: #ffcbe7;
+  color: #880e4f;
+  opacity: 0.7;
 }
 </style>
