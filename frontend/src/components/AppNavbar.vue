@@ -10,9 +10,7 @@
         <router-link to="/cart">
           <v-btn class="my-2" color="pink-darken-4"
             >Shopping Cart
-            <span class="badge" v-if="cartItems.length > 0">{{
-              cartItems.length
-            }}</span>
+            <span class="badge" v-if="cartItems > 0">{{ cartItems }}</span>
           </v-btn>
         </router-link>
       </v-col>
@@ -23,15 +21,14 @@
 
 <script setup>
 import logo from "@/assets/logo.png";
-import axios from "../axios-config";
-import { onMounted, ref } from "vue";
+import { useCartStore } from "@/store/cart";
+import { computed, onMounted } from "vue";
 
-const cartItems = ref([]);
+const cartStore = useCartStore();
+const cartItems = computed(() => cartStore.cartItems);
 
 onMounted(() => {
-  axios.get(`/users/0/cart`).then((res) => {
-    cartItems.value = res.data;
-  });
+  cartStore.obtenerItems();
 });
 </script>
 

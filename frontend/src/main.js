@@ -14,6 +14,13 @@ import ProductsViewVue from './views/ProductsView.vue'
 import ProductDetailViewVue from './views/ProductDetailView.vue'
 import NotFound404ViewVue from './views/NotFound404View.vue'
 
+
+import { createPinia } from 'pinia'
+import createPersistedState from 'pinia-plugin-persistedstate'
+
+const pinia = createPinia()
+pinia.use(createPersistedState)
+
 const vuetify = createVuetify({
     components,
     directives,
@@ -39,6 +46,7 @@ initializeApp(firebaseConfig);
 
 createApp(App)
     .use(vuetify)
+    .use(pinia)
     .use(VueRouter.createRouter({
         history: VueRouter.createWebHistory(process.env.BASE_URL),
         routes: [{

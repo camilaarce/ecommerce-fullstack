@@ -52,6 +52,9 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "../axios-config";
 import AlertAddToCart from "@/components/AlertAddToCart.vue";
+import { useCartStore } from "@/store/cart";
+
+const cartStore = useCartStore();
 
 const route = useRouter();
 
@@ -81,6 +84,7 @@ const mostrarCurso = (id) => {
 const addToCart = (course) => {
   axios.post(`/users/0/cart`, course).then(() => {
     alert.value = true;
+    cartStore.addItem();
   });
 };
 

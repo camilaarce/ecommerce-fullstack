@@ -60,12 +60,16 @@
 <script setup>
 import axios from "../axios-config";
 import { onMounted, ref } from "vue";
+import { useCartStore } from "@/store/cart";
+
+const cartStore = useCartStore();
 
 const cartItems = ref([]);
 
 const remove = (id) => {
   axios.delete(`/users/0/cart/${id}`).then((res) => {
     cartItems.value = res.data;
+    cartStore.removeItem();
   });
 };
 

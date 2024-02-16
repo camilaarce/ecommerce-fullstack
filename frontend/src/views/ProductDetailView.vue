@@ -37,6 +37,9 @@ import { onMounted, ref } from "vue";
 import NotFound404View from "./NotFound404View.vue";
 import axios from "../axios-config";
 import AlertAddToCart from "@/components/AlertAddToCart.vue";
+import { useCartStore } from "@/store/cart";
+
+const cartStore = useCartStore();
 
 const route = useRoute();
 const course = ref(null);
@@ -45,6 +48,7 @@ const alert = ref(false);
 const addToCart = () => {
   axios.post(`/users/0/cart`, course.value).then(() => {
     alert.value = true;
+    cartStore.addItem();
   });
 };
 
