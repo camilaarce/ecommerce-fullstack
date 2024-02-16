@@ -1,6 +1,6 @@
 <template>
   <div>
-    <alert-add-to-cart v-if="alert" />
+    <alert-add-to-cart :text="textAlert" v-if="alert" />
     <div class="text-h4 ml-7 my-2"><p>Courses</p></div>
     <v-divider class="mx-3"></v-divider>
     <div class="container-products">
@@ -63,6 +63,7 @@ const courses = ref([]);
 const currentPage = ref(1);
 const itemsPerPage = 3;
 const alert = ref(false);
+const textAlert = ref("");
 
 const totalPages = computed(() =>
   Math.ceil(courses.value.length / itemsPerPage)
@@ -82,9 +83,19 @@ const mostrarCurso = (id) => {
 };
 
 const addToCart = (course) => {
-  axios.post(`/users/0/cart`, course).then(() => {
-    alert.value = true;
-    cartStore.addItem();
+  let isIn;
+  axios.get("/users/0/cart").then((res) => {
+    isIn = res.data.some((item) => item.id == course.id);
+    if (isIn) {
+      textAlert.value = "Course is already in cart";
+      alert.value = true;
+    } else {
+      axios.post(`/users/0/cart`, course).then(() => {
+        textAlert.value = "Course was added to cart";
+        alert.value = true;
+        cartStore.addItem();
+      });
+    }
   });
 };
 

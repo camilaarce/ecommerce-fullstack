@@ -1,13 +1,19 @@
 <template>
   <div class="alert">
     <v-alert
-      text="Se agregó el curso al carrito"
+      :text="text"
       closable
       variant="tonal"
       color="pink-darken-4"
     ></v-alert>
   </div>
 </template>
+
+<script setup>
+import { defineProps } from "vue";
+
+defineProps(["text"]);
+</script>
 
 <style scoped>
 .alert {

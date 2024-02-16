@@ -1,6 +1,6 @@
 <template>
   <div v-if="course" class="mb-5">
-    <AlertAddToCart v-if="alert" />
+    <AlertAddToCart :text="textAlert" v-if="alert" />
     <v-img
       :src="axios.getUri() + course.image"
       height="500"
@@ -44,11 +44,22 @@ const cartStore = useCartStore();
 const route = useRoute();
 const course = ref(null);
 const alert = ref(false);
+const textAlert = ref("");
 
 const addToCart = () => {
-  axios.post(`/users/0/cart`, course.value).then(() => {
-    alert.value = true;
-    cartStore.addItem();
+  let isIn;
+  axios.get("/users/0/cart").then((res) => {
+    isIn = res.data.some((item) => item.id == course.value.id);
+    if (isIn) {
+      textAlert.value = "Course is already in cart";
+      alert.value = true;
+    } else {
+      axios.post(`/users/0/cart`, course.value).then(() => {
+        textAlert.value = "Course was added to cart";
+        alert.value = true;
+        cartStore.addItem();
+      });
+    }
   });
 };
 
