@@ -22,6 +22,19 @@ import AppNavbar from "./components/AppNavbar.vue";
   box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #b8fffb;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #880e4f;
+  border-radius: 20px;
+}
+
 .container {
   display: grid;
   place-items: center;
