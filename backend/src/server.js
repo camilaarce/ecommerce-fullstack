@@ -3,13 +3,11 @@ import { MongoClient } from 'mongodb';
 import path from 'path';
 import cors from 'cors';
 
+require('dotenv').config();
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-// Agrega credenciales
-const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}` });
 
 
-require('dotenv').config();
 const app = express();
 async function start() {
     const client = new MongoClient(`mongodb+srv://camilarce2710:${process.env.PASS}@cluster0.at3tbvn.mongodb.net/?retryWrites=true&w=majority`)
@@ -81,27 +79,36 @@ async function start() {
     })
 
     app.post('/create_preference', async (req, res) => {
-        const body = {
-            items: [{
-                title: req.body.title,
-                quantity: Number(req.body.quantity),
-                price: Number(req.body.price),
-                currency_id: "ARS",
-            }],
-            back_urls: {
-                success: 'https://ecommerce-fullstack-camilaarce.netlify.app/',
-                fail: 'https://ecommerce-fullstack-camilaarce.netlify.app/',
-                pending: 'https://ecommerce-fullstack-camilaarce.netlify.app/'
-            },
-            auto_return: 'approved'
-        };
+        try {
+            const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}`, options: { timeout: 5000 } });
+            const preference = new Preference(clientMP);
 
-        const preference = new Preference(clientMP);
-        const result = await preference.create({ body });
-        res.json({
-            id: result.id
-        })
-    })
+            const result = await preference.create({
+                body: {
+                    items: [
+                        {
+                            id: req.body.id,
+                            title: req.body.title,
+                            quantity: 1,
+                            unit_price: 100
+                        }
+                    ],
+                    back_urls: {
+                        success: 'https://ecommerce-o9xm.onrender.com/courses',
+                        failure: 'https://ecommerce-o9xm.onrender.com/courses',
+                        pending: 'https://ecommerce-o9xm.onrender.com/courses',
+                    },
+                    auto_return: 'approved'
+                }
+            });
+            res.json(result.id);
+        } catch (error) {
+            console.error('Error al crear la preferencia:', error);
+            res.status(500).json({ error: 'Error al crear la preferencia' });
+        }
+    });
+
+
 
     app.listen(8000, () => {
         console.log('Server is listening on port 8000');

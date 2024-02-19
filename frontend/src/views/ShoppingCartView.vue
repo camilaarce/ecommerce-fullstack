@@ -47,9 +47,10 @@
         </v-row>
         <v-divider class="my-5"></v-divider>
       </div>
-      <v-btn block class="my-2" color="pink-darken-4"
+      <v-btn block class="my-2" color="pink-darken-4" @click="pagar"
         >Proceed to checkout</v-btn
       >
+      <div id="wallet_container"></div>
     </div>
     <div v-else class="text-center mt-5">
       <h2>You current have no items in your cart.</h2>
@@ -71,6 +72,45 @@ const remove = (id) => {
     cartItems.value = res.data;
     cartStore.removeItem();
   });
+};
+
+const mp = new MercadoPago("TEST-413c6e86-8b97-4232-93ab-8e30ddd2662a", {
+  locale: "es-AR",
+});
+
+const pagar = () => {
+  const orderData = {
+    id: 0,
+    title: "Courses",
+    quantity: 1,
+    price: 15000,
+  };
+
+  axios
+    .post("/create_preference", orderData, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then((res) => {
+      createCheckoutButton(res.data);
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const createCheckoutButton = (preference) => {
+  const bricksBuilder = mp.bricks();
+  const renderComponent = () => {
+    if (window.checkoutButton) window.checkoutButton.unmount();
+    bricksBuilder.create("wallet", "wallet_container", {
+      initialization: {
+        preferenceId: preference,
+      },
+    });
+  };
+
+  renderComponent();
 };
 
 onMounted(() => {
