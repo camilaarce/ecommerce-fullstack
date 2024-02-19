@@ -3,6 +3,12 @@ import { MongoClient } from 'mongodb';
 import path from 'path';
 import cors from 'cors';
 
+// SDK de Mercado Pago
+import { MercadoPagoConfig, Preference } from 'mercadopago';
+// Agrega credenciales
+const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}` });
+
+
 require('dotenv').config();
 const app = express();
 async function start() {
@@ -72,6 +78,29 @@ async function start() {
         const user = await db.collection('users').findOne({ id: req.params.userId })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
+    })
+
+    app.post('/create_instance', async (req, res) => {
+        const body = {
+            items: [{
+                title: req.body.title,
+                quantity: Number(req.body.quantity),
+                price: Number(req.body.price),
+                currency_id: "ARS",
+            }],
+            back_urls: {
+                success: 'https://ecommerce-fullstack-camilaarce.netlify.app/',
+                fail: 'https://ecommerce-fullstack-camilaarce.netlify.app/',
+                pending: 'https://ecommerce-fullstack-camilaarce.netlify.app/'
+            },
+            auto_return: 'approved'
+        };
+
+        const preference = new Preference(clientMP);
+        const result = await preference.create({ body });
+        res.json({
+            id: result.id
+        })
     })
 
     app.listen(8000, () => {
