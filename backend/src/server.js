@@ -80,7 +80,7 @@ async function start() {
         res.json(populatedCart)
     })
 
-    app.post('/create_instance', async (req, res) => {
+    app.post('/create_preference', async (req, res) => {
         const body = {
             items: [{
                 title: req.body.title,
