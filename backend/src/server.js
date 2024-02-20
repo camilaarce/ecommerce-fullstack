@@ -78,6 +78,38 @@ async function start() {
         res.json(populatedCart)
     })
 
+    app.post('/register', async (req, res) => {
+        const bcrypt = require('bcrypt');
+        const user = {
+            name: req.body.name,
+            email: req.body.email,
+            password: await bcrypt.hash(req.body.password, 10)
+        }
+        await db.collection('users').insertOne(user);
+        res.json(user)
+    })
+
+    const jwt = require('jsonwebtoken');
+
+    app.post('/login', async (req, res) => {
+        const bcrypt = require('bcrypt');
+        const user = await db.collection('users').findOne({ email: req.body.email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Correo electrónico incorrecto' });
+        }
+
+        const match = await bcrypt.compare(req.body.password, user.password);
+
+        if (!match) {
+            return res.status(401).json({ message: 'Contraseña incorrecta' });
+        }
+
+        const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
+
+        res.json({ token });
+    });
+
     app.post('/create_preference', async (req, res) => {
         try {
             const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}`, options: { timeout: 5000 } });
