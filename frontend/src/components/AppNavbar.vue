@@ -8,11 +8,18 @@
       </v-col>
       <v-col cols="6" class="d-flex align-center justify-end">
         <router-link to="/cart">
-          <v-btn class="my-2" color="pink-darken-4"
-            >Shopping Cart
+          <v-btn class="my-2" color="pink-darken-4"><v-icon icon="mdi-cart"></v-icon>
             <span class="badge" v-if="cartItems > 0">{{ cartItems }}</span>
           </v-btn>
         </router-link>
+        <router-link to="/login" v-if="!isLogged">
+          <v-btn class="my-2 ml-2" color="pink-darken-4">
+            login
+          </v-btn>
+        </router-link>
+        <v-btn v-else class="my-2 ml-2" color="pink-darken-4" @click="logout">
+          logout
+        </v-btn>
       </v-col>
     </v-row>
     <v-divider class="mx-3"></v-divider>
@@ -26,6 +33,10 @@ import { computed, onMounted } from "vue";
 
 const cartStore = useCartStore();
 const cartItems = computed(() => cartStore.cartItems);
+
+const logout = () => {
+  
+}
 
 onMounted(() => {
   cartStore.obtenerItems();

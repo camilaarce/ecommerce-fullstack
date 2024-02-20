@@ -93,21 +93,26 @@ async function start() {
 
     app.post('/login', async (req, res) => {
         const bcrypt = require('bcrypt');
-        const user = await db.collection('users').findOne({ email: req.body.email });
+        try {
+            const user = await db.collection('users').findOne({ email: req.body.email });
 
         if (!user) {
-            return res.status(404).json({ message: 'Correo electrónico incorrecto' });
+            throw new Error('Incorrect email');
         }
 
         const match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
-            return res.status(401).json({ message: 'Contraseña incorrecta' });
+            throw new Error('Incorrect password');
         }
 
         const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
 
         res.json({ token });
+        } catch (error) {
+            res.status(401).send({'error': error.message});
+        }
+            
     });
 
     app.post('/create_preference', async (req, res) => {

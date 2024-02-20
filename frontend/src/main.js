@@ -28,6 +28,7 @@ const vuetify = createVuetify({
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import LoginViewVue from './views/LoginView.vue'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -64,6 +65,9 @@ createApp(App)
         }, {
             path: '/:pathMatch(.*)*',
             component: NotFound404ViewVue
+        }, {
+            path: '/login',
+            component: LoginViewVue
         }]
     }))
     .mount('#app')
