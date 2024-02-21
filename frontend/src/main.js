@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, markRaw } from 'vue'
 import App from './App.vue'
 import * as VueRouter from 'vue-router'
 
@@ -13,6 +13,7 @@ import ShoppingCartViewVue from './views/ShoppingCartView.vue'
 import ProductsViewVue from './views/ProductsView.vue'
 import ProductDetailViewVue from './views/ProductDetailView.vue'
 import NotFound404ViewVue from './views/NotFound404View.vue'
+import LoginViewVue from './views/LoginView.vue'
 
 
 import { createPinia } from 'pinia'
@@ -25,25 +26,6 @@ const vuetify = createVuetify({
     components,
     directives,
 })
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import LoginViewVue from './views/LoginView.vue'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyCsiKm_kW1LGgmX1hnh-p-ELWDXi3Fl_Ms",
-    authDomain: "ecommerce-fullstack-camilaarce.firebaseapp.com",
-    projectId: "ecommerce-fullstack-camilaarce",
-    storageBucket: "ecommerce-fullstack-camilaarce.appspot.com",
-    messagingSenderId: "611238637761",
-    appId: "1:611238637761:web:668d387570f98377ec2440"
-};
-
-// Initialize Firebase
-initializeApp(firebaseConfig);
 
 createApp(App)
     .use(vuetify)

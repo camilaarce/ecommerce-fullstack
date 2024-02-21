@@ -4,7 +4,7 @@
             <v-card-title class="text-center text-h4 mb-5">
                 <p>Login</p>
             </v-card-title>
-            <p class="text-error">{{ error }}</p>
+            <p class="text-error">{{ authStore.error }}</p>
             <v-form @submit.prevent="login" v-model="form">
                 <v-text-field label="Email" placeholder="Enter your email" v-model="email"
                     :rules="[rules.required]"></v-text-field>
@@ -24,8 +24,14 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "../axios-config";
 import { useRouter } from "vue-router";
+import { useAuthStore } from '@/store/auth';
+import { onMounted } from "vue";
+import { watch } from "vue";
+
+const authStore = useAuthStore();
+
+const router = useRouter();
 
 const email = ref(null);
 const pass = ref(null);
@@ -34,28 +40,26 @@ const form = ref(false);
 
 const rules = { required: value => !!value || 'Obligatory field' }
 
-const route = useRouter();
-
-const error = ref(null);
-
 const loading = ref(false);
 
-const login = () => {
+const login = async () => {
     loading.value = true;
     const user = {
         'email': email.value,
         'password': pass.value
     }
-    axios.post('/login', user)
-    .then((res) => {
-        localStorage.setItem('token', res.data.token)
-        route.push('/')
-    })
-    .catch((err) => {
-        error.value = err.response.data.error
-        loading.value = false;
-    })
+    await authStore.login(user, router)
 }
+
+onMounted(() => {
+    authStore.error = null;
+})
+
+watch(() => authStore.error, (newError) => {
+    if (newError !== null) {
+        loading.value = false;
+    }
+});
 </script>
 
 <style scoped>

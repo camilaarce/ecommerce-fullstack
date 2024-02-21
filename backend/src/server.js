@@ -6,6 +6,7 @@ import cors from 'cors';
 require('dotenv').config();
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { log } from 'console';
 
 
 const app = express();
@@ -108,7 +109,7 @@ async function start() {
 
         const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
 
-        res.json({ token });
+        res.json({ token, 'id': user._id });
         } catch (error) {
             res.status(401).send({'error': error.message});
         }
