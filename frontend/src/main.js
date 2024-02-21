@@ -58,7 +58,7 @@ const router = VueRouter.createRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
-        if (useAuthStore.authUser) {
+        if (useAuthStore().authUser) {
             next()
         } else {
             next('/login')
