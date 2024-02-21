@@ -18,6 +18,7 @@ import LoginViewVue from './views/LoginView.vue'
 
 import { createPinia } from 'pinia'
 import createPersistedState from 'pinia-plugin-persistedstate'
+import RegisterViewVue from './views/RegisterView.vue'
 
 const pinia = createPinia()
 pinia.use(createPersistedState)
@@ -50,6 +51,9 @@ createApp(App)
         }, {
             path: '/login',
             component: LoginViewVue
+        }, {
+            path: '/register',
+            component: RegisterViewVue
         }]
     }))
     .mount('#app')
