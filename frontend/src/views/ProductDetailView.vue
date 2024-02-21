@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import NotFound404View from "./NotFound404View.vue";
 import axios from "../axios-config";
@@ -41,12 +41,14 @@ import { useAuthStore } from "@/store/auth";
 
 const authStore = useAuthStore();
 
+const router = useRouter()
 const route = useRoute();
 const course = ref(null);
 const alert = ref(false);
 const textAlert = ref("");
 
 const addToCart = () => {
+  if (authStore.authUser) {
   let isIn;
   axios.get(`/users/${authStore.authUser}/cart`).then((res) => {
     isIn = res.data.some((item) => item.id == course.value.id);
@@ -61,6 +63,9 @@ const addToCart = () => {
       });
     }
   });
+} else {
+  router.push('/login')
+}
 };
 
 onMounted(() => {

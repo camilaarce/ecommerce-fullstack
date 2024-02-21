@@ -83,6 +83,7 @@ const mostrarCurso = (id) => {
 };
 
 const addToCart = (course) => {
+  if (authStore.authUser) {
   let isIn;
   axios.get(`/users/${authStore.authUser}/cart`).then((res) => {
     isIn = res.data.some((item) => item.id == course.id);
@@ -97,6 +98,9 @@ const addToCart = (course) => {
       });
     }
   });
+  } else {
+    route.push('/login')
+  }
 };
 
 onMounted(() => {
