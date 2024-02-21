@@ -37,9 +37,9 @@ import { onMounted, ref } from "vue";
 import NotFound404View from "./NotFound404View.vue";
 import axios from "../axios-config";
 import AlertAddToCart from "@/components/AlertAddToCart.vue";
-import { useCartStore } from "@/store/cart";
+import { useAuthStore } from "@/store/auth";
 
-const cartStore = useCartStore();
+const authStore = useAuthStore();
 
 const route = useRoute();
 const course = ref(null);
@@ -57,7 +57,7 @@ const addToCart = () => {
       axios.post(`/users/${authStore.authUser}/cart`, course.value).then(() => {
         textAlert.value = "Course was added to cart";
         alert.value = true;
-        cartStore.addItem();
+        authStore.addItem();
       });
     }
   });

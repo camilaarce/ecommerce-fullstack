@@ -7,9 +7,9 @@
         </router-link>
       </v-col>
       <v-col cols="6" class="d-flex align-center justify-end">
-        <router-link to="/cart">
+        <router-link to="/cart" v-if="authStore.authUser">
           <v-btn class="my-2" color="pink-darken-4"><v-icon icon="mdi-cart"></v-icon>
-            <span class="badge" v-if="cartItems > 0">{{ cartItems }}</span>
+            <span class="badge" v-if="authStore.cart > 0">{{ authStore.cart }}</span>
           </v-btn>
         </router-link>
         <router-link to="/login" v-if="!authStore.authUser">
@@ -29,22 +29,17 @@
 <script setup>
 import logo from "@/assets/logo.png";
 import { useAuthStore } from "@/store/auth";
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 
 const router = useRouter();
 
-const cartItems = computed(() => authStore.cartItems);
-
 const logout = () => {
   authStore.logout(router)
 }
 
-onMounted(() => {
-  authStore.obtenerItems();
-});
 </script>
 
 <style scoped>

@@ -92,7 +92,6 @@ const pagar = () => {
     })
     .then((res) => {
       createCheckoutButton(res.data);
-      console.log(res);
     })
     .catch((err) => {
       console.log(err);
