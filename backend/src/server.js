@@ -61,20 +61,20 @@ async function start() {
 
     app.post('/users/:userId/cart', async (req, res) => {
         const courseId = req.body.id;
-        await db.collection('users').updateOne({ id: req.params.userId }, {
+        await db.collection('users').updateOne({ _id: req.params.userId }, {
             $addToSet: { cartItems: courseId }
         })
-        const user = await db.collection('users').findOne({ id: req.params.userId })
+        const user = await db.collection('users').findOne({ _id: req.params.userId })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
 
     app.delete('/users/:userId/cart/:courseId', async (req, res) => {
         const courseId = req.params.courseId;
-        await db.collection('users').updateOne({ id: req.params.userId }, {
+        await db.collection('users').updateOne({ _id: req.params.userId }, {
             $pull: { cartItems: courseId }
         })
-        const user = await db.collection('users').findOne({ id: req.params.userId })
+        const user = await db.collection('users').findOne({ _id: req.params.userId })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
