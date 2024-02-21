@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
             this.authUser = null;
             this.cart = 0;
             this.error = null;
-            route.push("/login");
+            router.push("/login");
         },
         addItem() {
             this.cart = this.cart + 1;
@@ -41,6 +41,7 @@ export const useAuthStore = defineStore("auth", {
             this.cart = this.cart - 1;
         },
         async obtenerItems() {
+            console.log(this.authUser);
             await axios
                 .get(`/users/${this.authUser}/cart`)
                 .then((res) => {

@@ -12,7 +12,7 @@
             <span class="badge" v-if="cartItems > 0">{{ cartItems }}</span>
           </v-btn>
         </router-link>
-        <router-link to="/login" v-if="!isLogged">
+        <router-link to="/login" v-if="!authStore.authUser">
           <v-btn class="my-2 ml-2" color="pink-darken-4">
             login
           </v-btn>
@@ -28,18 +28,22 @@
 
 <script setup>
 import logo from "@/assets/logo.png";
-import { useCartStore } from "@/store/cart";
+import { useAuthStore } from "@/store/auth";
 import { computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-const cartStore = useCartStore();
-const cartItems = computed(() => cartStore.cartItems);
+const authStore = useAuthStore();
+
+const router = useRouter();
+
+const cartItems = computed(() => authStore.cartItems);
 
 const logout = () => {
-  
+  authStore.logout(router)
 }
 
 onMounted(() => {
-  cartStore.obtenerItems();
+  authStore.obtenerItems();
 });
 </script>
 

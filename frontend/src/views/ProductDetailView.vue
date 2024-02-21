@@ -48,13 +48,13 @@ const textAlert = ref("");
 
 const addToCart = () => {
   let isIn;
-  axios.get("/users/0/cart").then((res) => {
+  axios.get(`/users/${authStore.authUser}/cart`).then((res) => {
     isIn = res.data.some((item) => item.id == course.value.id);
     if (isIn) {
       textAlert.value = "Course is already in cart";
       alert.value = true;
     } else {
-      axios.post(`/users/0/cart`, course.value).then(() => {
+      axios.post(`/users/${authStore.authUser}/cart`, course.value).then(() => {
         textAlert.value = "Course was added to cart";
         alert.value = true;
         cartStore.addItem();

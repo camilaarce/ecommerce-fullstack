@@ -1,5 +1,5 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import path from 'path';
 import cors from 'cors';
 
@@ -48,7 +48,8 @@ async function start() {
     }
 
     app.get('/users/:userId/cart', async (req, res) => {
-        const user = await db.collection('users').findOne({ id: req.params.userId })
+        const id = new ObjectId(req.params.userId)
+        const user = await db.collection('users').findOne({ _id: id})
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
@@ -61,20 +62,22 @@ async function start() {
 
     app.post('/users/:userId/cart', async (req, res) => {
         const courseId = req.body.id;
-        await db.collection('users').updateOne({ _id: req.params.userId }, {
+        const id = new ObjectId(req.params.userId)
+        await db.collection('users').updateOne({ _id: id }, {
             $addToSet: { cartItems: courseId }
         })
-        const user = await db.collection('users').findOne({ _id: req.params.userId })
+        const user = await db.collection('users').findOne({ _id: id })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
 
     app.delete('/users/:userId/cart/:courseId', async (req, res) => {
+        const id = new ObjectId(req.params.userId)
         const courseId = req.params.courseId;
-        await db.collection('users').updateOne({ _id: req.params.userId }, {
+        await db.collection('users').updateOne({ _id: id }, {
             $pull: { cartItems: courseId }
         })
-        const user = await db.collection('users').findOne({ _id: req.params.userId })
+        const user = await db.collection('users').findOne({ _id: id })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
@@ -84,7 +87,8 @@ async function start() {
         const user = {
             name: req.body.name,
             email: req.body.email,
-            password: await bcrypt.hash(req.body.password, 10)
+            password: await bcrypt.hash(req.body.password, 10),
+            cartItems: []
         }
         await db.collection('users').insertOne(user);
         res.json(user)

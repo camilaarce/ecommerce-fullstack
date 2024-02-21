@@ -52,9 +52,9 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "../axios-config";
 import AlertAddToCart from "@/components/AlertAddToCart.vue";
-import { useCartStore } from "@/store/cart";
+import { useAuthStore } from "@/store/auth";
 
-const cartStore = useCartStore();
+const authStore = useAuthStore();
 
 const route = useRouter();
 
@@ -84,16 +84,16 @@ const mostrarCurso = (id) => {
 
 const addToCart = (course) => {
   let isIn;
-  axios.get("/users/0/cart").then((res) => {
+  axios.get(`/users/${authStore.authUser}/cart`).then((res) => {
     isIn = res.data.some((item) => item.id == course.id);
     if (isIn) {
       textAlert.value = "Course is already in cart";
       alert.value = true;
     } else {
-      axios.post(`/users/0/cart`, course).then(() => {
+      axios.post(`/users/${authStore.authUser}/cart`, course).then(() => {
         textAlert.value = "Course was added to cart";
         alert.value = true;
-        cartStore.addItem();
+        authStore.addItem();
       });
     }
   });
