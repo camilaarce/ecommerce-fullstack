@@ -61,7 +61,7 @@ const route = useRouter();
 const courses = ref([]);
 
 const currentPage = ref(1);
-const itemsPerPage = 3;
+const itemsPerPage = 6;
 const alert = ref(false);
 const textAlert = ref("");
 
