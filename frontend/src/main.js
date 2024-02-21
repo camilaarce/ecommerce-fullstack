@@ -19,6 +19,7 @@ import LoginViewVue from './views/LoginView.vue'
 import { createPinia } from 'pinia'
 import createPersistedState from 'pinia-plugin-persistedstate'
 import RegisterViewVue from './views/RegisterView.vue'
+import { useAuthStore } from './store/auth'
 
 const pinia = createPinia()
 pinia.use(createPersistedState)
@@ -28,32 +29,47 @@ const vuetify = createVuetify({
     directives,
 })
 
+const router = VueRouter.createRouter({
+    history: VueRouter.createWebHistory(process.env.BASE_URL),
+    routes: [{
+        path: '/',
+        component: ProductsViewVue
+    }, {
+        path: '/cart',
+        component: ShoppingCartViewVue,
+        meta: { requiresAuth: true }
+    }, {
+        path: '/products',
+        component: ProductsViewVue
+    }, {
+        path: '/products/:productId',
+        component: ProductDetailViewVue
+    }, {
+        path: '/login',
+        component: LoginViewVue
+    }, {
+        path: '/register',
+        component: RegisterViewVue
+    }, {
+        path: '/:pathMatch(.*)*',
+        component: NotFound404ViewVue
+    }]
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth) {
+        if (useAuthStore.authUser) {
+            next()
+        } else {
+            next('/login')
+        }
+    } else {
+        next()
+    }
+})
+
 createApp(App)
     .use(vuetify)
     .use(pinia)
-    .use(VueRouter.createRouter({
-        history: VueRouter.createWebHistory(process.env.BASE_URL),
-        routes: [{
-            path: '/',
-            component: ProductsViewVue
-        }, {
-            path: '/cart',
-            component: ShoppingCartViewVue,
-        }, {
-            path: '/products',
-            component: ProductsViewVue
-        }, {
-            path: '/products/:productId',
-            component: ProductDetailViewVue
-        }, {
-            path: '/:pathMatch(.*)*',
-            component: NotFound404ViewVue
-        }, {
-            path: '/login',
-            component: LoginViewVue
-        }, {
-            path: '/register',
-            component: RegisterViewVue
-        }]
-    }))
+    .use(router)
     .mount('#app')
