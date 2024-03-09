@@ -1,11 +1,12 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import path from 'path';
 import cors from 'cors';
 
 require('dotenv').config();
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { log } from 'console';
 
 
 const app = express();
@@ -47,7 +48,8 @@ async function start() {
     }
 
     app.get('/users/:userId/cart', async (req, res) => {
-        const user = await db.collection('users').findOne({ id: req.params.userId })
+        const id = new ObjectId(req.params.userId)
+        const user = await db.collection('users').findOne({ _id: id})
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
@@ -60,23 +62,63 @@ async function start() {
 
     app.post('/users/:userId/cart', async (req, res) => {
         const courseId = req.body.id;
-        await db.collection('users').updateOne({ id: req.params.userId }, {
+        const id = new ObjectId(req.params.userId)
+        await db.collection('users').updateOne({ _id: id }, {
             $addToSet: { cartItems: courseId }
         })
-        const user = await db.collection('users').findOne({ id: req.params.userId })
+        const user = await db.collection('users').findOne({ _id: id })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
 
     app.delete('/users/:userId/cart/:courseId', async (req, res) => {
+        const id = new ObjectId(req.params.userId)
         const courseId = req.params.courseId;
-        await db.collection('users').updateOne({ id: req.params.userId }, {
+        await db.collection('users').updateOne({ _id: id }, {
             $pull: { cartItems: courseId }
         })
-        const user = await db.collection('users').findOne({ id: req.params.userId })
+        const user = await db.collection('users').findOne({ _id: id })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
+
+    app.post('/register', async (req, res) => {
+        const bcrypt = require('bcrypt');
+        const user = {
+            name: req.body.name,
+            email: req.body.email,
+            password: await bcrypt.hash(req.body.password, 10),
+            cartItems: []
+        }
+        await db.collection('users').insertOne(user);
+        res.json(user)
+    })
+
+    const jwt = require('jsonwebtoken');
+
+    app.post('/login', async (req, res) => {
+        const bcrypt = require('bcrypt');
+        try {
+            const user = await db.collection('users').findOne({ email: req.body.email });
+
+        if (!user) {
+            throw new Error('Incorrect email');
+        }
+
+        const match = await bcrypt.compare(req.body.password, user.password);
+
+        if (!match) {
+            throw new Error('Incorrect password');
+        }
+
+        const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
+
+        res.json({ token, 'id': user._id });
+        } catch (error) {
+            res.status(401).send({'error': error.message});
+        }
+            
+    });
 
     app.post('/create_preference', async (req, res) => {
         try {

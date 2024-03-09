@@ -61,16 +61,16 @@
 <script setup>
 import axios from "../axios-config";
 import { onMounted, ref } from "vue";
-import { useCartStore } from "@/store/cart";
+import { useAuthStore } from "@/store/auth";
 
-const cartStore = useCartStore();
+const authStore = useAuthStore();
 
 const cartItems = ref([]);
 
 const remove = (id) => {
-  axios.delete(`/users/0/cart/${id}`).then((res) => {
+  axios.delete(`/users/${authStore.authUser}/cart/${id}`).then((res) => {
     cartItems.value = res.data;
-    cartStore.removeItem();
+    authStore.removeItem();
   });
 };
 
@@ -92,7 +92,6 @@ const pagar = () => {
     })
     .then((res) => {
       createCheckoutButton(res.data);
-      console.log(res);
     })
     .catch((err) => {
       console.log(err);
@@ -114,7 +113,7 @@ const createCheckoutButton = (preference) => {
 };
 
 onMounted(() => {
-  axios.get(`/users/0/cart`).then((res) => {
+  axios.get(`/users/${authStore.authUser}/cart`).then((res) => {
     cartItems.value = res.data;
     cartItems.value.map((item) => ({ ...item, dialog: false }));
   });
