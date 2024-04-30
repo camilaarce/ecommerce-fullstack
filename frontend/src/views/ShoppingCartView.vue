@@ -140,12 +140,14 @@ const pagar = () => {
 
 const createCheckoutButton = (preference) => {
   console.log(preference);
+  const preferenceId = preference.id; // Extraer el ID de preferencia de la respuesta
+
   const bricksBuilder = mp.bricks();
   const renderComponent = () => {
     if (window.checkoutButton) window.checkoutButton.unmount();
     bricksBuilder.create("wallet", "wallet_container", {
       initialization: {
-        preferenceId: preference,
+        preferenceId: preferenceId, // Usar el ID de preferencia en la inicialización
       },
     });
   };
