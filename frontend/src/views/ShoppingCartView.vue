@@ -74,7 +74,7 @@ const remove = (id) => {
   });
 };
 
-const mp = new MercadoPago("TEST-413c6e86-8b97-4232-93ab-8e30ddd2662a", {
+const mp = new MercadoPago("APP_USR-0b2e2909-6745-4512-ac4f-9e4f5ae6ce63", {
   locale: "es-AR",
 });
 
@@ -83,7 +83,8 @@ const pagar = () => {
     id: 0,
     title: "Courses",
     quantity: 1,
-    price: 15000,
+    unit_price: 15000,
+    description: "descripcion del producto",
   };
 
   axios
@@ -99,6 +100,7 @@ const pagar = () => {
 };
 
 const createCheckoutButton = (preference) => {
+  console.log(preference);
   const bricksBuilder = mp.bricks();
   const renderComponent = () => {
     if (window.checkoutButton) window.checkoutButton.unmount();

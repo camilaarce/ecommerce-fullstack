@@ -6,10 +6,16 @@ import cors from 'cors';
 require('dotenv').config();
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+//import mercadopago from 'mercadopago';
 import { log } from 'console';
 
-
 const app = express();
+
+/* mercadopago.configure({
+    platform_id: process.env.PLATFORM_ID,
+    integrator_id: process.env.INTEGRATOR_ID,
+}); */
+
 async function start() {
     const client = new MongoClient(`mongodb+srv://camilarce2710:${process.env.PASS}@cluster0.at3tbvn.mongodb.net/?retryWrites=true&w=majority`)
 
@@ -49,7 +55,7 @@ async function start() {
 
     app.get('/users/:userId/cart', async (req, res) => {
         const id = new ObjectId(req.params.userId)
-        const user = await db.collection('users').findOne({ _id: id})
+        const user = await db.collection('users').findOne({ _id: id })
         const populatedCart = await populateCartIds(user.cartItems)
         res.json(populatedCart)
     })
@@ -101,49 +107,84 @@ async function start() {
         try {
             const user = await db.collection('users').findOne({ email: req.body.email });
 
-        if (!user) {
-            throw new Error('Incorrect email');
-        }
+            if (!user) {
+                throw new Error('Incorrect email');
+            }
 
-        const match = await bcrypt.compare(req.body.password, user.password);
+            const match = await bcrypt.compare(req.body.password, user.password);
 
-        if (!match) {
-            throw new Error('Incorrect password');
-        }
+            if (!match) {
+                throw new Error('Incorrect password');
+            }
 
-        const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user._id }, 'secreto', { expiresIn: '1h' });
 
-        res.json({ token, 'id': user._id });
+            res.json({ token, 'id': user._id });
         } catch (error) {
-            res.status(401).send({'error': error.message});
+            res.status(401).send({ 'error': error.message });
         }
-            
+
     });
 
     app.post('/create_preference', async (req, res) => {
+        console.log(req.body);
         try {
             const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}`, options: { timeout: 5000 } });
             const preference = new Preference(clientMP);
 
             const result = await preference.create({
                 body: {
-                    items: [
+                    "back_urls": {},
+                    "expires": false,
+                    "items": [
                         {
-                            id: req.body.id,
-                            title: req.body.title,
-                            quantity: 1,
-                            unit_price: 100
+                            "title": "Dummy Title",
+                            "description": "Dummy description",
+                            "picture_url": "http://www.myapp.com/myimage.jpg",
+                            "category_id": "car_electronics",
+                            "quantity": 1,
+                            "currency_id": "ARS",
+                            "unit_price": 10000
                         }
                     ],
-                    back_urls: {
-                        success: 'https://ecommerce-o9xm.onrender.com/courses',
-                        failure: 'https://ecommerce-o9xm.onrender.com/courses',
-                        pending: 'https://ecommerce-o9xm.onrender.com/courses',
+                    "marketplace_fee": null,
+                    "metadata": null,
+                    "payer": {
+                        "phone": {
+                            "number": null
+                        },
+                        "identification": {},
+                        "address": {
+                            "street_number": null
+                        }
                     },
-                    auto_return: 'approved'
+                    "payment_methods": {
+                        "excluded_payment_methods": [
+                            {}
+                        ],
+                        "excluded_payment_types": [
+                            {}
+                        ],
+                        "installments": null,
+                        "default_installments": null
+                    },
+                    "shipments": {
+                        "local_pickup": false,
+                        "default_shipping_method": null,
+                        "free_methods": [
+                            {
+                                "id": null
+                            }
+                        ],
+                        "cost": null,
+                        "free_shipping": false,
+                        "receiver_address": {
+                            "street_number": null
+                        }
+                    }
                 }
             });
-            res.json(result.id);
+            res.json(result);
         } catch (error) {
             console.error('Error al crear la preferencia:', error);
             res.status(500).json({ error: 'Error al crear la preferencia' });
