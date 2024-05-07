@@ -150,9 +150,9 @@ async function start() {
                     }
                 ],
                 back_urls: {
-                    success: "https://ecommerce-fullstack-camilaarce.netlify.app/success",
-                    failure: "https://ecommerce-fullstack-camilaarce.netlify.app/failure",
-                    pending: "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
+                    success: "https://ecommerce-fullstack-camilaarce.netlify.app/feedback",
+                    failure: "https://ecommerce-fullstack-camilaarce.netlify.app/feedback",
+                    pending: "https://ecommerce-fullstack-camilaarce.netlify.app/feedback"
                 },
                 auto_return: "approved",
                 payment_methods: {
@@ -169,7 +169,13 @@ async function start() {
 
     });
 
-
+    app.get('/feedback', function (req, res) {
+        res.json({
+            Payment: req.query.payment_id,
+            Status: req.query.status,
+            MerchantOrder: req.query.merchant_order_id
+        });
+    });
 
     app.listen(8000, () => {
         console.log('Server is listening on port 8000');
