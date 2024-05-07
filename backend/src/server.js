@@ -136,7 +136,7 @@ async function start() {
                     items: [
                         {
                             title: 'Cursos',
-                            unit_price: req.body.reduce((acc, item) => acc + item.precio, 0),
+                            unit_price: req.body,
                             quantity: 1
                         }
                     ]
