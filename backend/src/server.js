@@ -134,9 +134,14 @@ async function start() {
             body: {
                 items: [
                     {
-                        title: 'Cursos',
-                        unit_price: 10000,
-                        quantity: 1
+                        "id": "item-ID-1234",
+                        "title": "Mi producto",
+                        "currency_id": "ARS",
+                        "picture_url": "https://www.mercadopago.com/org-img/MP3/home/logomp3.gif",
+                        "description": "Descripción del Item",
+                        "category_id": "art",
+                        "quantity": 1,
+                        "unit_price": 10000
                     }
                 ],
                 back_urls: {
