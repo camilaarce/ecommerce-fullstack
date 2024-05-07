@@ -79,9 +79,8 @@ const mp = new MercadoPago("TEST-a69a70ee-ec3f-49ad-a30e-ea0790c56108", {
 });
 
 const pagar = () => {
-  const price = cartItems.value.reduce((total, item) => total + item.precio, 0);
   axios
-    .post("/create_preference", price, {
+    .post("/create_preference", {'price': 5000}, {
       headers: { "Content-Type": "application/json" },
     })
     .then((res) => {

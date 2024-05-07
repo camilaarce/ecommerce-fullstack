@@ -128,7 +128,7 @@ async function start() {
 
     app.post('/create_preference', async (req, res) => {
         try {
-            const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}`, options: { timeout: 5000 } });
+            const clientMP = new MercadoPagoConfig({ accessToken: 'TEST-2024853291389327-050208-ca9a70192705738a516682c5894b593b-188505513', options: { timeout: 5000 } });
             const preference = new Preference(clientMP);
 
             preference.create({
@@ -136,7 +136,7 @@ async function start() {
                     items: [
                         {
                             title: 'Cursos',
-                            unit_price: req.body,
+                            unit_price: 10000,
                             quantity: 1
                         }
                     ]
