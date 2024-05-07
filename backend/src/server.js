@@ -130,7 +130,7 @@ async function start() {
         const clientMP = new MercadoPagoConfig({ accessToken: 'TEST-2024853291389327-050208-ca9a70192705738a516682c5894b593b-188505513', options: { timeout: 5000 } });
         const preference = new Preference(clientMP);
 
-        preference.create({
+        const result = await preference.create({
             body: {
                 items: [
                     {
@@ -149,7 +149,7 @@ async function start() {
         })
             .then(console.log)
             .catch(console.log);
-        res.json(preference);
+        res.json(result);
 
     });
 
