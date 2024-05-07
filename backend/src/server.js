@@ -132,7 +132,7 @@ async function start() {
             const preference = new Preference(clientMP);
 
             const cart = req.body.cart;
-
+            console.log(req.body)
             preference.create({
                 body: {
                     items: [
