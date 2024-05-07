@@ -80,7 +80,7 @@ const mp = new MercadoPago("TEST-a69a70ee-ec3f-49ad-a30e-ea0790c56108", {
 
 const pagar = () => {
   axios
-    .post("/create_preference", {'price': 5000}, {
+    .post("/create_preference", {
       headers: { "Content-Type": "application/json" },
     })
     .then((res) => {
