@@ -150,6 +150,7 @@ async function start() {
             })
                 .then(console.log)
                 .catch(console.log);
+                res.json(preference);
         } catch (error) {
             console.error('Error al crear la preferencia:', error);
             res.status(500).json({ error: 'Error al crear la preferencia' });
