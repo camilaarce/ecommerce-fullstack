@@ -79,55 +79,9 @@ const mp = new MercadoPago("APP_USR-0b2e2909-6745-4512-ac4f-9e4f5ae6ce63", {
 });
 
 const pagar = () => {
-  const orderData = {
-    back_urls: {},
-    expires: false,
-    items: [
-      {
-        title: "Dummy Title",
-        description: "Dummy description",
-        picture_url: "http://www.myapp.com/myimage.jpg",
-        category_id: "car_electronics",
-        quantity: 1,
-        currency_id: "BRL",
-        unit_price: 10,
-      },
-    ],
-    marketplace_fee: null,
-    metadata: null,
-    payer: {
-      phone: {
-        number: null,
-      },
-      identification: {},
-      address: {
-        street_number: null,
-      },
-    },
-    payment_methods: {
-      excluded_payment_methods: [{}],
-      excluded_payment_types: [{}],
-      installments: null,
-      default_installments: null,
-    },
-    shipments: {
-      local_pickup: false,
-      default_shipping_method: null,
-      free_methods: [
-        {
-          id: null,
-        },
-      ],
-      cost: null,
-      free_shipping: false,
-      receiver_address: {
-        street_number: null,
-      },
-    },
-  };
-
+  const cart = cartItems.value;
   axios
-    .post("/create_preference", orderData, {
+    .post("/create_preference", cart, {
       headers: { "Content-Type": "application/json" },
     })
     .then((res) => {

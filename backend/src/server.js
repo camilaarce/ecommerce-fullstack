@@ -127,64 +127,25 @@ async function start() {
     });
 
     app.post('/create_preference', async (req, res) => {
-        console.log(req.body);
         try {
             const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}`, options: { timeout: 5000 } });
             const preference = new Preference(clientMP);
 
-            const result = await preference.create({
+            const cart = req.body.cart;
+
+            preference.create({
                 body: {
-                    "back_urls": {},
-                    "expires": false,
-                    "items": [
+                    items: [
                         {
-                            "title": "Dummy Title",
-                            "description": "Dummy description",
-                            "picture_url": "http://www.myapp.com/myimage.jpg",
-                            "category_id": "car_electronics",
-                            "quantity": 1,
-                            "currency_id": "ARS",
-                            "unit_price": 10000
+                            title: 'Cursos',
+                            unit_price: cart.reduce((acc, item) => acc + item.precio, 0),
+                            quantity: 1
                         }
-                    ],
-                    "marketplace_fee": null,
-                    "metadata": null,
-                    "payer": {
-                        "phone": {
-                            "number": null
-                        },
-                        "identification": {},
-                        "address": {
-                            "street_number": null
-                        }
-                    },
-                    "payment_methods": {
-                        "excluded_payment_methods": [
-                            {}
-                        ],
-                        "excluded_payment_types": [
-                            {}
-                        ],
-                        "installments": null,
-                        "default_installments": null
-                    },
-                    "shipments": {
-                        "local_pickup": false,
-                        "default_shipping_method": null,
-                        "free_methods": [
-                            {
-                                "id": null
-                            }
-                        ],
-                        "cost": null,
-                        "free_shipping": false,
-                        "receiver_address": {
-                            "street_number": null
-                        }
-                    }
+                    ]
                 }
-            });
-            res.json(result);
+            })
+                .then(console.log)
+                .catch(console.log);
         } catch (error) {
             console.error('Error al crear la preferencia:', error);
             res.status(500).json({ error: 'Error al crear la preferencia' });
