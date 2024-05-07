@@ -127,7 +127,12 @@ async function start() {
     });
 
     app.post('/create_preference', async (req, res) => {
-        const clientMP = new MercadoPagoConfig({ accessToken: 'TEST-2024853291389327-050208-ca9a70192705738a516682c5894b593b-188505513', options: { timeout: 5000 } });
+        const clientMP = new MercadoPagoConfig({ 
+            accessToken: 'TEST-2024853291389327-050208-ca9a70192705738a516682c5894b593b-188505513',
+            options: { timeout: 5000 },
+            platform_id: '2024853291389327',
+            integrator_id: 'dev_24c65fb163bf11ea96500242ac130004', 
+        });
         const preference = new Preference(clientMP);
 
         const result = await preference.create({
@@ -150,6 +155,14 @@ async function start() {
                     pending: "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
                 },
                 auto_return: "approved",
+                payment_methods: {
+                    excluded_payment_methods: [
+                      {}
+                    ],
+                    excluded_payment_types: [
+                      {}
+                    ]
+                  }
             }
         })
         res.json(result);
