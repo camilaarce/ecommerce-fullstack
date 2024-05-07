@@ -84,6 +84,7 @@ const pagar = () => {
       headers: { "Content-Type": "application/json" },
     })
     .then((res) => {
+      console.log(res);
       createCheckoutButton(res.data);
     })
     .catch((err) => {
