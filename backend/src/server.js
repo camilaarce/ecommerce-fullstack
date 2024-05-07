@@ -139,16 +139,14 @@ async function start() {
                         quantity: 1
                     }
                 ],
-                "back_urls": {
-                    "success": "https://ecommerce-fullstack-camilaarce.netlify.app/success",
-                    "failure": "https://ecommerce-fullstack-camilaarce.netlify.app/failure",
-                    "pending": "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
+                back_urls: {
+                    success: "https://ecommerce-fullstack-camilaarce.netlify.app/success",
+                    failure: "https://ecommerce-fullstack-camilaarce.netlify.app/failure",
+                    pending: "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
                 },
-                "auto_return": "approved",
+                auto_return: "approved",
             }
         })
-            .then(console.log)
-            .catch(console.log);
         res.json(result);
 
     });
