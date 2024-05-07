@@ -74,7 +74,7 @@ const remove = (id) => {
   });
 };
 
-const mp = new MercadoPago("APP_USR-0b2e2909-6745-4512-ac4f-9e4f5ae6ce63", {
+const mp = new MercadoPago("TEST-a69a70ee-ec3f-49ad-a30e-ea0790c56108", {
   locale: "es-AR",
 });
 
