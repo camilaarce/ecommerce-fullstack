@@ -131,14 +131,12 @@ async function start() {
             const clientMP = new MercadoPagoConfig({ accessToken: `${process.env.ACCESS_TOKEN}`, options: { timeout: 5000 } });
             const preference = new Preference(clientMP);
 
-            const cart = req.body.cart;
-            console.log(req.body)
             preference.create({
                 body: {
                     items: [
                         {
                             title: 'Cursos',
-                            unit_price: cart.reduce((acc, item) => acc + item.precio, 0),
+                            unit_price: req.body.reduce((acc, item) => acc + item.precio, 0),
                             quantity: 1
                         }
                     ]
