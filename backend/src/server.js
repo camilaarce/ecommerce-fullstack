@@ -139,7 +139,13 @@ async function start() {
                             unit_price: 10000,
                             quantity: 1
                         }
-                    ]
+                    ],
+                    "back_urls": {
+                        "success": "https://ecommerce-fullstack-camilaarce.netlify.app/success",
+                        "failure": "https://ecommerce-fullstack-camilaarce.netlify.app/failure",
+                        "pending": "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
+                    },
+                    "auto_return": "approved",
                 }
             })
                 .then(console.log)
