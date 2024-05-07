@@ -127,34 +127,30 @@ async function start() {
     });
 
     app.post('/create_preference', async (req, res) => {
-        try {
-            const clientMP = new MercadoPagoConfig({ accessToken: 'TEST-2024853291389327-050208-ca9a70192705738a516682c5894b593b-188505513', options: { timeout: 5000 } });
-            const preference = new Preference(clientMP);
+        const clientMP = new MercadoPagoConfig({ accessToken: 'TEST-2024853291389327-050208-ca9a70192705738a516682c5894b593b-188505513', options: { timeout: 5000 } });
+        const preference = new Preference(clientMP);
 
-            preference.create({
-                body: {
-                    items: [
-                        {
-                            title: 'Cursos',
-                            unit_price: 10000,
-                            quantity: 1
-                        }
-                    ],
-                    "back_urls": {
-                        "success": "https://ecommerce-fullstack-camilaarce.netlify.app/success",
-                        "failure": "https://ecommerce-fullstack-camilaarce.netlify.app/failure",
-                        "pending": "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
-                    },
-                    "auto_return": "approved",
-                }
-            })
-                .then(console.log)
-                .catch(console.log);
-                res.json(preference);
-        } catch (error) {
-            console.error('Error al crear la preferencia:', error);
-            res.status(500).json({ error: 'Error al crear la preferencia' });
-        }
+        preference.create({
+            body: {
+                items: [
+                    {
+                        title: 'Cursos',
+                        unit_price: 10000,
+                        quantity: 1
+                    }
+                ],
+                "back_urls": {
+                    "success": "https://ecommerce-fullstack-camilaarce.netlify.app/success",
+                    "failure": "https://ecommerce-fullstack-camilaarce.netlify.app/failure",
+                    "pending": "https://ecommerce-fullstack-camilaarce.netlify.app/pending"
+                },
+                "auto_return": "approved",
+            }
+        })
+            .then(console.log)
+            .catch(console.log);
+        res.json(preference);
+
     });
 
 
